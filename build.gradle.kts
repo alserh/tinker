@@ -21,15 +21,18 @@ repositories {
 }
 
 dependencies {
+	// JLine owns the input loop. spring-shell-starter is gone: it mounted its own
+	// Terminal/LineReader on the same stdin and its dispatcher is command-shaped,
+	// which fights a chat REPL ("No command found for 'yo'").
 	implementation("org.jline:jline:3.26.3")
+	implementation("org.jline:jline-terminal-jansi:3.26.3")
+	implementation("org.fusesource.jansi:jansi:2.4.1")
+
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	implementation("org.springframework.shell:spring-shell-starter:3.3.3")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.fusesource.jansi:jansi:2.4.1")
-	implementation("org.jline:jline-terminal-jansi:3.26.3")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

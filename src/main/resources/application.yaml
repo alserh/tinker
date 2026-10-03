@@ -1,14 +1,9 @@
 spring:
   application:
     name: tinker
-  shell:
-    # Spring Shell owns the interactive JLine loop now. Its own LineReader
-    # handles bracketed paste natively, so no custom Parser is needed.
-    interactive:
-      enabled: true
-    command:
-      script:
-        enabled: false
+  main:
+    # The REPL prints its own banner; Spring's would just be noise.
+    banner-mode: "off"
 
 tinker:
   providers:
