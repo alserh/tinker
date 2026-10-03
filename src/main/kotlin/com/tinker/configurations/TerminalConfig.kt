@@ -1,42 +1,39 @@
-package com.tinker.config
+package com.tinker.configurations
 
-import org.jline.reader.EOFError
 import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
-import org.jline.reader.Parser
 import org.jline.terminal.Terminal
+import org.jline.terminal.TerminalBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Lazy
 
+/**
+ * Owns the terminal and the line editor.
+ *
+ * This file used to hook a custom org.jline.reader.Parser to guess at paste
+ * markers. That cannot work at that layer: the parser receives the assembled
+ * line, not the raw escape sequences, and throwing EOFError means "ask me for
+ * another line" - which is what made the shell sit there indefinitely.
+ *
+ * Paste handling now lives in AgentReplLauncher, above the terminal, so it
+ * works on consoles that never emit paste markers at all.
+ */
 @Configuration
 class TerminalConfig {
 
+    @Bean(destroyMethod = "close")
+    fun terminal(): Terminal = TerminalBuilder.builder()
+        .system(true)
+        .build()
+
     @Bean
-    fun customLineReader(
-        @Lazy terminal: Terminal
-    ): LineReader {
-        // Create an explicit parser interceptor that checks for text-paste status blocks
-        val pasteAwareParser = Parser { line, cursor, context ->
-            // Check if the current terminal input stream is inside a bracketed paste event block
-            if (line.contains("\u001B[200~") && !line.contains("\u001B[201~")) {
-                // Throw an EOF exception to instruct JLine that the text block is incomplete; keep collecting text!
-                throw EOFError(-1, -1, "Pasting text block in progress...")
-            }
-
-            // Otherwise, process the string input natively using standard JLine token mapping mechanics
-            org.jline.reader.impl.DefaultParser().parse(line, cursor, context)
+    fun customLineReader(terminal: Terminal): LineReader = LineReaderBuilder.builder()
+        .terminal(terminal)
+        .build()
+        .apply {
+            // Honoured by terminals that support bracketed paste; harmless where
+            // they do not - the legacy Windows console ignores the request.
+            setOpt(LineReader.Option.BRACKETED_PASTE)
+            setVariable(LineReader.LIST_MAX, 1000)
         }
-
-        val lineReader = LineReaderBuilder.builder()
-            .terminal(terminal)
-            .parser(pasteAwareParser) // Intercept character streams natively
-            .build()
-
-        // Turn on terminal option level processing parameters
-        lineReader.setOpt(LineReader.Option.BRACKETED_PASTE)
-        lineReader.setVariable(LineReader.LIST_MAX, 1000)
-
-        return lineReader
-    }
 }

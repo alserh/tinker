@@ -41,3 +41,4 @@ out/
 
 ### dev ###
 .env
+tinker.log

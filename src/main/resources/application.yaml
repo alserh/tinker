@@ -1,13 +1,9 @@
 spring:
   application:
     name: tinker
-  shell:
-    # FORCE Spring Shell to completely disable its automatic interactive JLine thread loops
-    interactive:
-      enabled: false
-    command:
-      script:
-        enabled: false
+  main:
+    # The REPL prints its own banner; Spring's would just be noise.
+    banner-mode: "off"
 
 tinker:
   providers:
