@@ -2,9 +2,10 @@ spring:
   application:
     name: tinker
   shell:
-    # FORCE Spring Shell to completely disable its automatic interactive JLine thread loops
+    # Spring Shell owns the interactive JLine loop now. Its own LineReader
+    # handles bracketed paste natively, so no custom Parser is needed.
     interactive:
-      enabled: false
+      enabled: true
     command:
       script:
         enabled: false
