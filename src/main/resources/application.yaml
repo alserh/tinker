@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: tinker
+  shell:
+    # FORCE Spring Shell to completely disable its automatic interactive JLine thread loops
+    interactive:
+      enabled: false
+    command:
+      script:
+        enabled: false
+
+tinker:
+  providers:
+    google:
+      baseUrl: "https://googleapis.com"
+      apiKey: "${GEMINI_API_KEY:}"
+    openrouter:
+      baseUrl: "https://openrouter.ai"
+      apiKey: "${OPENROUTER_API_KEY:}"

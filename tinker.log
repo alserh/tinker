@@ -1,0 +1,12 @@
+1791019462163:agent --message 'yo pepega u memeing?'
+1791019580209:agent --message 'ty che pes'
+1791019840173:agent --message 'package com.tinker.config\n\nimport org.jline.reader.LineReader\nimport org.jline.reader.LineReaderBuilder\nimport org.jline.reader.Parser\nimport org.jline.terminal.Terminal\nimport org.springframework.context.annotation.Bean\nimport org.springframework.context.annotation.Configuration\nimport org.springframework.context.annotation.Lazy\n\n@Configuration\nclass TerminalConfig {\n\n    @Bean\n    fun customLineReader(\n        @Lazy terminal: Terminal,\n        @Lazy parser: Parser\n    ): LineReader {\n        val lineReader = LineReaderBuilder.builder()\n            .terminal(terminal)\n            .parser(parser)\n            .build()\n\n        // FIX: Points directly to JLine's native Option enum structure
+1791019840217:}
+1791020059709:agent --message 'hello regular test'
+1791020143196:agent as;ldka;lsdkasd
+1791020420220:asd
+1791020426393:agent yo
+1791020437882:agent sup
+1791020477972:agent If you're ready, we can track this major win with Git or paste code loops with 'single' and "double" quotes freely!\nagent If you're ready, we can track this major win with Git or paste code loops with 'single' and "double" quotes freely!
+1791020547092:agent opa opa
+1791020552291:agent ./gradlew bootRun --console=plain
